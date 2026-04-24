@@ -1,5 +1,5 @@
-# hmpps-person-record-performance-tests
-Gatling performance tests for verifying hmpps-person-record endpoints.
+# hmpps-person-record-gatling
+Core person record: Gatling performance tests
 
 ## Getting started.
 
