@@ -46,7 +46,7 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: Touch env file
-        run: touch ./gatling/.env
+        run: touch .env
 
       - name: Start Gatling
         env:
