@@ -17,7 +17,7 @@ on:
         type: choice
         options:
           - local
-          - smoke
+          - worstcase
           - happypath
 jobs:
   gatling-run:
@@ -53,25 +53,16 @@ jobs:
           CLIENT_ID: ${{ secrets.GATLING_CLIENT_ID }}
           CLIENT_SECRET: ${{ secrets.GATLING_CLIENT_SECRET }}
         run: |
-          export PROFILE_FQN="${{ github.event.inputs.profile }}"
-          export ENV_NAME="${{ github.event.inputs.envName }}"
-          
-          ENV_NAME="${ENV_NAME:-dev}"
+         
+          PROFILE="${{ github.event.inputs.profile }}"
+          ENV="${{ github.event.inputs.envName }}"
           
           set -eo pipefail
-          ARGS=("--no-daemon")
-          ARGS+=("--stacktrace")
-          ARGS+=("gatlingRunCi")
-          
-          if [ -n "${{ github.event.inputs.profile }}" ]; then
-              ARGS+=("-Dprofile=$PROFILE_FQN")
-          fi
-          ARGS+=("-Denv=$ENV_NAME")
           
           export CLIENT_ID="${CLIENT_ID}"
           export CLIENT_SECRET="${CLIENT_SECRET}"
-          echo "Running: ./gradlew ${ARGS[*]}"
-          CLIENT_ID="${CLIENT_ID}" CLIENT_SECRET="${CLIENT_SECRET}" ./gradlew "${ARGS[@]}"
+          echo "Running: CLIENT_ID="${CLIENT_ID}" CLIENT_SECRET="${CLIENT_SECRET}" ./gradlew gatlingRunCi --no-daemon -Dprofile="$PROFILE" -Denv="$ENV"""
+          CLIENT_ID="${CLIENT_ID}" CLIENT_SECRET="${CLIENT_SECRET}" ./gradlew gatlingRunCi --no-daemon -Dprofile="$PROFILE" -Denv="$ENV""
 
 
       - name: Upload Gatling reports

@@ -47,6 +47,8 @@ tasks.register<Exec>("gatlingRunCi") {
 }
 
 gatling {
-    systemProperty("profile", System.getProperty("profile") ?: "happypath")
-    systemProperty("env", System.getProperty("env") ?: "dev")
+    jvmArgs = listOf(
+        "-Dprofile=${System.getProperty("profile") ?: "happypath"}",
+        "-Denv=${System.getProperty("env") ?: "dev"}"
+    )
 }
