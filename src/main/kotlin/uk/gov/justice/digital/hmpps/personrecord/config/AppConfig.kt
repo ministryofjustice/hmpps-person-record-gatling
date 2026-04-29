@@ -11,7 +11,7 @@ object AppConfig {
     .withFallback(ConfigFactory.load("simulation.conf"))
 
   val env = System.getProperty("env", "dev")
-  val profile: String = System.getProperty("profile", "smoke")
+  val profile: String = System.getProperty("profile", "happypath")
 
   private fun conf(path: String) = config.getAnyRef(path)
   val baseUrl = conf("environments.$env.baseUrl") as String

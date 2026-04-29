@@ -1,3 +1,6 @@
+import org.gradle.internal.classpath.Instrumented.systemProperty
+
+
 plugins {
     kotlin("jvm") version "2.3.0"
     id("io.gatling.gradle") version "3.15.0"
@@ -41,4 +44,9 @@ tasks.register<Exec>("gatlingRunCi") {
     val wrapper = if (org.gradle.internal.os.OperatingSystem.current().isWindows) "gradlew.bat" else "./gradlew"
     println("[GATLING][Gradle] $wrapper ${args.joinToString(" ")}")
     commandLine(wrapper, *args.toTypedArray())
+}
+
+gatling {
+    systemProperty("profile", System.getProperty("profile") ?: "happypath")
+    systemProperty("env", System.getProperty("env") ?: "dev")
 }
