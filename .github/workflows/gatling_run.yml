@@ -61,8 +61,7 @@ jobs:
           
           export CLIENT_ID="${CLIENT_ID}"
           export CLIENT_SECRET="${CLIENT_SECRET}"
-          echo "Running: CLIENT_ID="${CLIENT_ID}" CLIENT_SECRET="${CLIENT_SECRET}" ./gradlew gatlingRunCi --no-daemon -Dprofile="$PROFILE" -Denv="$ENV"""
-          CLIENT_ID="${CLIENT_ID}" CLIENT_SECRET="${CLIENT_SECRET}" ./gradlew gatlingRunCi --no-daemon -Dprofile="$PROFILE" -Denv="$ENV""
+          CLIENT_ID="${CLIENT_ID}" CLIENT_SECRET="${CLIENT_SECRET}" ./gradlew gatlingRunCi --no-daemon -Dprofile="$PROFILE" -Denv="$ENV"
 
 
       - name: Upload Gatling reports
