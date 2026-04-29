@@ -36,10 +36,13 @@ tasks.register<JavaExec>("generateTestData") {
 tasks.register<Exec>("gatlingRunCi") {
     group = "gatling"
     description = "Run un-attended in github ci"
+    val profileProp = System.getProperty("profile") ?: "happypath"
+    val envProp = System.getProperty("env") ?: "dev"
 
     val args = mutableListOf("gatlingRun")
     args += listOf("--all")
-
+    args.add("-Dprofile=$profileProp")
+    args.add("-Denv=$envProp")
     workingDir = project.rootDir
     val wrapper = if (org.gradle.internal.os.OperatingSystem.current().isWindows) "gradlew.bat" else "./gradlew"
     println("[GATLING][Gradle] $wrapper ${args.joinToString(" ")}")
