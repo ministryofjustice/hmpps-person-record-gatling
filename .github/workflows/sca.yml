@@ -56,7 +56,3 @@ jobs:
           JAVA_HOME: /opt/jdk
           JAVA_HOME_25_X64: ''
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          codeql-upload-findings: "always"
-          docker-images-file: ${{ github.workspace }}/docker-images.json
