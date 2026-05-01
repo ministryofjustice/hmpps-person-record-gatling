@@ -1,8 +1,6 @@
 name: Gatling performance test run
 
 on:
-  push:
-    branches: [ "CPR-1163" ]
   workflow_dispatch:
     inputs:
       envName:
