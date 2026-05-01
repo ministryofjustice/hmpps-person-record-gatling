@@ -35,13 +35,15 @@ tasks.register<JavaExec>("generateTestData") {
 
 tasks.register<Exec>("gatlingRunCi") {
     group = "gatling"
-    val p = System.getProperty("profile") ?: "happypath"
-    val e = System.getProperty("env") ?: "dev"
+    val profile = System.getProperty("profile") ?: "happypath"
+    val env = System.getProperty("env") ?: "dev"
+    val duration = System.getProperty("duration") ?: "360"
     workingDir = project.rootDir
     val wrapper = if (org.gradle.internal.os.OperatingSystem.current().isWindows) "gradlew.bat" else "./gradlew"
-    commandLine(wrapper, "gatlingRun", "--all", "-Dprofile=$p", "-Denv=$e")
+    commandLine(wrapper, "gatlingRun", "--all", "-Dprofile=$profile", "-Denv=$env", "-Dduration=$duration")
 }
 gatling {
     systemProperty("profile", System.getProperty("profile") ?: "happypath")
     systemProperty("env", System.getProperty("env") ?: "dev")
+    systemProperty("duration", System.getProperty("duration") ?: "360")
 }

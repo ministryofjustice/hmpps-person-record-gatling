@@ -18,7 +18,7 @@ export OUT_FILE="src/main/resources/testdata/data.csv"
 echo "Running Gatling..."
 export GATLING_CLIENT_ID="<CLIENT_ID>"
 export GATLING_CLIENT_SECRET='<CLIENT_SECRET>'
-CLIENT_ID=$GATLING_CLIENT_ID CLIENT_SECRET=$GATLING_CLIENT_SECRET ./gradlew gatlingRun -Denv=dev -Dprofile=local
+CLIENT_ID=$GATLING_CLIENT_ID CLIENT_SECRET=$GATLING_CLIENT_SECRET ./gradlew gatlingRun -Denv=dev -Dprofile=local -Dduration=60
 
 echo "Open Gatling Report"
 open "build/reports/gatling/$(ls -1t build/reports/gatling | head -1)/index.html"

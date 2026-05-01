@@ -1,6 +1,9 @@
 name: Gatling performance test run
 
 on:
+  on:
+  push:
+  branches: [ "CPR-1163" ]
   workflow_dispatch:
     inputs:
       envName:
@@ -19,6 +22,11 @@ on:
           - local
           - worstcase
           - happypath
+      duration:
+        description: "The execution time"
+        required: false
+        default: "360"
+        type: string
 jobs:
   gatling-run:
     name: Run Gatling simulations
@@ -64,8 +72,8 @@ jobs:
           ./gradlew gatlingRunCi \
           --no-daemon \
           -Dprofile="${{ github.event.inputs.profile }}" \
-          -Denv="${{ github.event.inputs.envName }}"
-
+          -Denv="${{ github.event.inputs.envName }}" \
+          -Dduration="${{ github.event.inputs.duration }}"
 
       - name: Upload Gatling reports
         if: always()
