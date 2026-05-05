@@ -11,8 +11,8 @@ repositories {
 dependencies {
     gatling("org.postgresql:postgresql:42.7.7")
     implementation("io.gatling.highcharts:gatling-charts-highcharts:3.15.0")
-    implementation("io.netty:netty-codec-http2:4.1.132.Final")
-    implementation("io.netty:netty-handler:4.1.132.Final")
+    implementation("io.netty:netty-codec-http2:4.2.13.Final")
+    implementation("io.netty:netty-handler:4.2.13.Final")
 }
 
 kotlin {
