@@ -1,7 +1,11 @@
+import org.gradle.internal.classpath.Instrumented.systemProperty
+
+
 plugins {
     kotlin("jvm") version "2.3.0"
     id("io.gatling.gradle") version "3.15.0"
     id("application")
+    id("org.owasp.dependencycheck") version "12.2.1"
 }
 
 repositories {
@@ -31,13 +35,15 @@ tasks.register<JavaExec>("generateTestData") {
 
 tasks.register<Exec>("gatlingRunCi") {
     group = "gatling"
-    description = "Run un-attended in github ci"
-
-    val args = mutableListOf("gatlingRun")
-    args += listOf("--all")
-
+    val profile = System.getProperty("profile") ?: "happypath"
+    val env = System.getProperty("env") ?: "dev"
+    val duration = System.getProperty("duration") ?: "360"
     workingDir = project.rootDir
     val wrapper = if (org.gradle.internal.os.OperatingSystem.current().isWindows) "gradlew.bat" else "./gradlew"
-    println("[GATLING][Gradle] $wrapper ${args.joinToString(" ")}")
-    commandLine(wrapper, *args.toTypedArray())
+    commandLine(wrapper, "gatlingRun", "--all", "-Dprofile=$profile", "-Denv=$env", "-Dduration=$duration")
+}
+gatling {
+    systemProperty("profile", System.getProperty("profile") ?: "happypath")
+    systemProperty("env", System.getProperty("env") ?: "dev")
+    systemProperty("duration", System.getProperty("duration") ?: "360")
 }

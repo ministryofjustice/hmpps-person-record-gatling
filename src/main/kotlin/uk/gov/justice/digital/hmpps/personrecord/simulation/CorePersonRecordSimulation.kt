@@ -3,6 +3,7 @@ package uk.gov.justice.digital.hmpps.personrecord.simulation
 
 import io.gatling.javaapi.core.CoreDsl.constantUsersPerSec
 import io.gatling.javaapi.core.CoreDsl.csv
+import io.gatling.javaapi.core.CoreDsl.global
 import io.gatling.javaapi.core.CoreDsl.listFeeder
 import io.gatling.javaapi.core.CoreDsl.scenario
 import io.gatling.javaapi.core.PopulationBuilder
@@ -64,5 +65,6 @@ class CorePersonRecordSimulation : Simulation() {
     setUp(*populations.toTypedArray())
       .protocols(httpProtocol)
       .maxDuration(Duration.ofSeconds(AppConfig.duration))
+      .assertions(global().successfulRequests().percent().gt(95.0))
   }
 }

@@ -11,7 +11,8 @@ object AppConfig {
     .withFallback(ConfigFactory.load("simulation.conf"))
 
   val env = System.getProperty("env", "dev")
-  val profile: String = System.getProperty("profile", "smoke")
+  val profile: String = System.getProperty("profile", "happypath")
+  val duration = System.getProperty("duration", "360").toLong()
 
   private fun conf(path: String) = config.getAnyRef(path)
   val baseUrl = conf("environments.$env.baseUrl") as String
@@ -23,5 +24,4 @@ object AppConfig {
   val getPrisonNumberUsers = conf("profiles.$profile.getPrisonNumberUsers") as Int
   val getCrnUsers = conf("profiles.$profile.getCrnUsers") as Int
   val getDefendantIdUsers = conf("profiles.$profile.getDefendantIdUsers") as Int
-  val duration = config.getInt("profiles.$profile.duration").toLong()
 }
