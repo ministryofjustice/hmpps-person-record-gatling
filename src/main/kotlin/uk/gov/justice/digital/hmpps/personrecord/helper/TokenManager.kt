@@ -10,14 +10,16 @@ import java.time.Instant
 import java.util.Base64
 
 object TokenManager {
+  @Volatile
   private var cacheToken: String = ""
+  @Volatile
   private var expiryTime: Long = 0
   private val client = HttpClient.newHttpClient()
 
   @Synchronized
   fun getToken(): String {
     val now = Instant.now().epochSecond
-    if (cacheToken.isNotEmpty() || now >= expiryTime - 300) {
+    if (cacheToken.isEmpty() || now >= expiryTime - 300) {
       fetchToken()
     }
     return cacheToken

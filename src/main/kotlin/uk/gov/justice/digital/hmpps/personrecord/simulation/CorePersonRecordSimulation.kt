@@ -12,6 +12,7 @@ import io.gatling.javaapi.http.HttpDsl.http
 
 import uk.gov.justice.digital.hmpps.personrecord.config.AppConfig
 import uk.gov.justice.digital.hmpps.personrecord.helper.ApiHelper
+import uk.gov.justice.digital.hmpps.personrecord.helper.TokenManager
 import java.time.Duration
 
 
@@ -29,16 +30,19 @@ class CorePersonRecordSimulation : Simulation() {
   private val scnPrisonNumber =
     scenario("prisonNumber")
       .feed(prisonNumber)
+      .exec { session -> session.set("sharedToken", TokenManager.getToken()) }
       .exec(ApiHelper.getPrisoners)
 
   private val scnCrn =
     scenario("crn")
       .feed(crn)
+      .exec { session -> session.set("sharedToken", TokenManager.getToken()) }
       .exec(ApiHelper.getCrns)
 
   private val scnDefendantId =
     scenario("defendantId")
       .feed(defendantId)
+      .exec { session -> session.set("sharedToken", TokenManager.getToken()) }
       .exec(ApiHelper.getDefendants)
 
   init {
