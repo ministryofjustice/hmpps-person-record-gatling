@@ -31,7 +31,7 @@ jobs:
     permissions:
       contents: read
       actions: read
-    timeout-minutes: 300
+    timeout-minutes: 600
     env:
       CLIENT_ID: ${{ secrets.GATLING_CLIENT_ID }}
       CLIENT_SECRET: ${{ secrets.GATLING_CLIENT_SECRET }}
