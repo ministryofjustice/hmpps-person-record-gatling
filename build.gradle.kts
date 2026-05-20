@@ -6,6 +6,7 @@ plugins {
     id("io.gatling.gradle") version "3.15.0"
     id("application")
     id("org.owasp.dependencycheck") version "12.2.1"
+    id("au.com.dius.pact") version "4.6.14"
 }
 
 repositories {
@@ -17,6 +18,10 @@ dependencies {
     implementation("io.gatling.highcharts:gatling-charts-highcharts:3.15.0")
     implementation("io.netty:netty-codec-http2:4.1.132.Final")
     implementation("io.netty:netty-handler:4.1.132.Final")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.10.2")
+    testImplementation("au.com.dius.pact.consumer:junit5:4.6.14")
+    testImplementation("io.rest-assured:rest-assured:5.4.0")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
 kotlin {
@@ -41,6 +46,10 @@ tasks.register<Exec>("gatlingRunCi") {
     workingDir = project.rootDir
     val wrapper = if (org.gradle.internal.os.OperatingSystem.current().isWindows) "gradlew.bat" else "./gradlew"
     commandLine(wrapper, "gatlingRun", "--all", "-Dprofile=$profile", "-Denv=$env", "-Dduration=$duration")
+}
+tasks.test{
+    useJUnitPlatform()
+    systemProperty("pact.rootDir", "$buildDir/pacts")
 }
 gatling {
     systemProperty("profile", System.getProperty("profile") ?: "happypath")
