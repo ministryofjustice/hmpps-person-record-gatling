@@ -1,6 +1,8 @@
-name: Node Build and Publish Pacts
+name: Pact Build and Publish
 
 on:
+  push:
+    branches: [ "soak-test" ]
   workflow_call:
     inputs:
       additional_docker_tag:
