@@ -28,6 +28,7 @@ jobs:
       PACT_BROKER_BASE_URL: 'https://pact-broker-prod.apps.live-1.cloud-platform.service.justice.gov.uk'
       PACT_BROKER_USERNAME: 'interventions'
       PACT_BROKER_PASSWORD: ${{ secrets.HMPPS_PACT_BROKER_PASSWORD }}
+      GITHUB_SHA: ${{ github.sha }}
     steps:
       - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
@@ -52,9 +53,4 @@ jobs:
           path: build/pacts
 
       - name: Publish Pact files to broker
-        env:
-          PACT_BROKER_BASE_URL: $PACT_BROKER_BASE_URL
-          PACT_BROKER_USERNAME: $PACT_BROKER_USERNAME
-          PACT_BROKER_PASSWORD: $PACT_BROKER_PASSWORD
-          GITHUB_SHA: ${{ github.sha }}
         run: ./gradlew pactPublish

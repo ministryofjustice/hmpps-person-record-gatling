@@ -56,3 +56,11 @@ gatling {
     systemProperty("env", System.getProperty("env") ?: "dev")
     systemProperty("duration", System.getProperty("duration") ?: "360")
 }
+pact {
+    publish {
+        pactBrokerUrl = System.getenv("PACT_BROKER_BASE_URL")
+        pactBrokerUsername = System.getenv("PACT_BROKER_USERNAME")
+        pactBrokerPassword = System.getenv("PACT_BROKER_PASSWORD")
+        tags = listOf(System.getenv("GITHUB_SHA") ?: "latest")
+    }
+}
