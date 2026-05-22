@@ -15,8 +15,12 @@ repositories {
 dependencies {
     gatling("org.postgresql:postgresql:42.7.11")
     implementation("io.gatling.highcharts:gatling-charts-highcharts:3.15.0")
-    implementation("io.netty:netty-codec-http2:4.2.13.Final")
-    implementation("io.netty:netty-handler:4.2.13.Final")
+    constraints{
+        implementation("io.netty:netty-codec-http2:4.2.13.Final")
+        implementation("io.netty:netty-handler:4.2.13.Final")
+        implementation("com.fasterxml.jackson.core.jackson-core:2.21.2")
+    }
+
 }
 
 kotlin {
