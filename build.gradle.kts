@@ -16,9 +16,9 @@ dependencies {
     gatling("org.postgresql:postgresql:42.7.11")
     implementation("io.gatling.highcharts:gatling-charts-highcharts:3.15.0")
     constraints{
-        implementation("io.netty:netty-codec-http2:4.2.13.Final")
-        implementation("io.netty:netty-handler:4.2.13.Final")
-        implementation("com.fasterxml.jackson.core.jackson-core:2.21.2")
+        add("gatling","io.netty:netty-codec-http2:4.2.13.Final")
+        add("gatling","io.netty:netty-transport-classes-epoll:4.2.13.Final")
+        add("gatling","com.fasterxml.jackson.core:jackson-core:2.21.1")
     }
 
 }
