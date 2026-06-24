@@ -2,7 +2,7 @@ name: Pact Build and Publish
 
 on:
   push:
-    branches: [ "soak-test" ]
+    branches: [ "cpr-soak-test" ]
   workflow_call:
     inputs:
       additional_docker_tag:
