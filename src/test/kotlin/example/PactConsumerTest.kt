@@ -60,11 +60,11 @@ class PactConsumerTest {
 
            return builder
              .usingLegacyDsl()
-             .given("An address exists for CRN $crn and address ID $cprAddressId")
+             .given("An address exists for CRN and address ID")
              .uponReceiving("A request to retrieve probation address")
-               .path("/person/probation/$crn/address/$cprAddressId")
+               .pathFromProviderState("/person/probation/\${crn}/address/\${cprAddressId}","/person/probation/$crn/address/$cprAddressId")
                .method("GET")
-               .headers(mapOf("Authorization" to "Bearer valid-token-with-ROLE_CORE_PERSON_RECORD_API__RO"))
+               .headers(mapOf("Authorization" to "Bearer test-token"))
              .willRespondWith()
                .status(200)
                .headers(mapOf("Content-Type" to "application/json"))
@@ -75,9 +75,8 @@ class PactConsumerTest {
     @Test
     @PactTestFor
     fun testGetProbationAddress(mockServer: au.com.dius.pact.consumer.MockServer) {
-        println("${mockServer.getUrl()}/person/probation/$crn/address/$cprAddressId")
         RestAssured.given()
-            .headers(mapOf("Authorization" to "Bearer valid-token-with-ROLE_CORE_PERSON_RECORD_API__RO"))
+            .headers(mapOf("Authorization" to "Bearer test-token"))
             .`when`()
             .get("${mockServer.getUrl()}/person/probation/$crn/address/$cprAddressId")
             .then()
