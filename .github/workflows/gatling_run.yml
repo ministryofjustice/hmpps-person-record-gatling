@@ -76,9 +76,9 @@ jobs:
           CLIENT_SECRET="${CLIENT_SECRET}" \
           ./gradlew gatlingRunCi \
           --no-daemon \
-          -Dprofile="PROFILE" \
-          -Denv="ENV" \
-          -Dduration="DURATION"
+          -Dprofile="$PROFILE" \
+          -Denv="$ENV" \
+          -Dduration="$DURATION"
 
       - name: Upload Gatling reports
         if: always()
