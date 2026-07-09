@@ -1,9 +1,6 @@
 name: Gatling performance test run
 
 on:
-  push:
-    branches:
-      - pipeline-fix
   schedule:
     - cron: '0 8 * * 1-5'
   workflow_dispatch:
