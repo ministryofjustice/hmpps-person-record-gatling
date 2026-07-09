@@ -2,7 +2,7 @@ name: Gatling performance test run
 
 on:
   schedule:
-    - cron: '0 11 * * 1-5'
+    - cron: '0 8 * * 1-5'
   workflow_dispatch:
     inputs:
       envName:
@@ -62,17 +62,20 @@ jobs:
         run: |
          
           PROFILE="${{ github.event.inputs.profile }}"
+          PROFILE="${PROFILE:-happypath}"
           ENV="${{ github.event.inputs.envName }}"
-          
+          ENV="${ENV:-dev}"
+          DURATION="${{ github.event.inputs.duration }}"
+          DURATION="${DURATION:-360}"
           set -eo pipefail
           
           CLIENT_ID="${CLIENT_ID}" \
           CLIENT_SECRET="${CLIENT_SECRET}" \
           ./gradlew gatlingRunCi \
           --no-daemon \
-          -Dprofile="${{ github.event.inputs.profile }}" \
-          -Denv="${{ github.event.inputs.envName }}" \
-          -Dduration="${{ github.event.inputs.duration }}"
+          -Dprofile="PROFILE" \
+          -Denv="ENV" \
+          -Dduration="DURATION"
 
       - name: Upload Gatling reports
         if: always()
