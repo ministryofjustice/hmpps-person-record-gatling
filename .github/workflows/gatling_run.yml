@@ -91,14 +91,13 @@ jobs:
           if-no-files-found: warn
 
 
-
       - name: Slack Notification
-        uses: slackapi/slack-github-action@v2.1.1
+        uses: slackapi/slack-github-action@v4
         with:
             method: chat.postMessage
             token: ${{ secrets.HMPPS_SLACK_BOT_TOKEN }}
             payload: |
-              channel: "#hmpps-person-record-alerts"
+              channel: "${{ vars.SECURITY_ALERTS_SLACK_CHANNEL_ID }}"
               attachments:
                 - color: "#df2c2c"
                   blocks:
