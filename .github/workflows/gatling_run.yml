@@ -77,6 +77,7 @@ jobs:
           -Denv="$ENV" \
           -Dduration="$DURATION"
 
+
       - name: Upload Gatling reports
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
@@ -86,3 +87,21 @@ jobs:
             gatling/build/reports/gatling/**
             **/build/reports/gatling/**
           if-no-files-found: warn
+
+
+
+      - name: Slack Notification
+        if: failure()
+        uses: slackapi/slack-github-action@v2.1.1
+        with:
+            method: chat.postMessage
+            token: ${{ secrets.HMPPS_SLACK_BOT_TOKEN }}
+            payload: |
+              channel: "#hmpps-person-record-alerts"
+              attachments:
+                - color: "#df2c2c"
+                  blocks:
+                    - type: section
+                      text:
+                        type: mrkdwn
+                        text: "❌ *Gatling Performance Test Failure*\n*Repository:* ${{ github.repository }}\n*Branch:* `${{ github.ref_name }}`\n*Workflow Run:* <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Workflow>"
