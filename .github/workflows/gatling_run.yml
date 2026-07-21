@@ -3,8 +3,6 @@ name: Gatling performance test run
 on:
   schedule:
     - cron: '0 8 * * 1-5'
-  push:
-    branches: [ "CPR-1262" ]
   workflow_dispatch:
     inputs:
       envName:
@@ -92,6 +90,7 @@ jobs:
 
 
       - name: Slack Notification
+        if: failure()
         uses: slackapi/slack-github-action@v4
         with:
             method: chat.postMessage

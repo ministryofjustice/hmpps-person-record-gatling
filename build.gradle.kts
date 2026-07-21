@@ -19,6 +19,10 @@ dependencies {
     implementation("io.netty:netty-handler:4.2.15.Final")
 }
 
+dependencyCheck {
+    formats = listOf("HTML", "SARIF")
+}
+
 kotlin {
     jvmToolchain(25)
 }
