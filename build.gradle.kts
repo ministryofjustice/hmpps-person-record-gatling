@@ -3,7 +3,7 @@ import org.gradle.internal.classpath.Instrumented.systemProperty
 
 plugins {
     id("uk.gov.justice.hmpps.gradle-spring-boot") version "11.0.1"
-    kotlin("jvm") version "2.4.0"
+    kotlin("jvm") version "2.4.10"
     id("io.gatling.gradle") version "3.15.1.1"
     id("application")
     id("org.owasp.dependencycheck") version "12.2.2"
