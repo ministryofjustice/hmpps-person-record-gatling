@@ -43,7 +43,7 @@ tasks.register<Exec>("gatlingRunCi") {
     val duration = System.getProperty("duration") ?: "360"
     workingDir = project.rootDir
     val wrapper = if (org.gradle.internal.os.OperatingSystem.current().isWindows) "gradlew.bat" else "./gradlew"
-    commandLine(wrapper, "gatlingRun", "--all", "-getPrisonNumber=$getPrisonNumber", "-getCrnNumber=$getCrnNumber", "-getDefendantId=$getDefendantId", "-Denv=$env", "-Dduration=$duration")
+    commandLine(wrapper, "gatlingRun", "--all", "-DgetPrisonNumber=$getPrisonNumber", "-DgetCrnNumber=$getCrnNumber", "-DgetDefendantId=$getDefendantId", "-Denv=$env", "-Dduration=$duration")
 }
 gatling {
     systemProperty("getPrisonNumber", System.getProperty("getPrisonNumber") ?: "15")
