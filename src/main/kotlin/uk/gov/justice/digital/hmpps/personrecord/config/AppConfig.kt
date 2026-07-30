@@ -8,7 +8,6 @@ object AppConfig {
 
   private val config = ConfigFactory.load()
     .withFallback(ConfigFactory.load("application.conf"))
-    .withFallback(ConfigFactory.load("simulation.conf"))
 
   val env = System.getProperty("env", "dev")
   val duration = System.getProperty("duration", "360").toLong()
@@ -20,7 +19,7 @@ object AppConfig {
   val uriGetCrn = conf("endpoint.getCrn") as String
   val uriGetDefendantId = conf("endpoint.getDefendantId") as String
 
-  val getPrisonNumberUsers = conf("getPrisonNumberUsers") as Int
-  val getCrnUsers = conf("getCrnUsers") as Int
-  val getDefendantIdUsers = conf("getDefendantIdUsers") as Int
+  val getPrisonNumberUsers = System.getProperty("getPrisonNumber", "15").toInt()
+  val getCrnUsers = System.getProperty("getCrnNumber", "1").toInt()
+  val getDefendantIdUsers = System.getProperty("getDefendantId", "1").toInt()
 }
