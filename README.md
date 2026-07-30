@@ -11,10 +11,9 @@ Core person record: Gatling performance tests
 
 
 ### Setting up load
-- Profiles are injected from `simulation.conf` file
+- Users are injected from `simulation.conf` file
 - Calculate number of users per second based on the required requests during a certain time
 - Add that number for the new endpoint
-- New profile can be created and injected during runtime
 
 
 ### Running tests in local
