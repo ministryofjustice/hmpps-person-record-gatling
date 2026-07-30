@@ -16,8 +16,8 @@ export OUT_FILE="src/main/resources/testdata/data.csv"
 ./gradlew generateTestData  --args="'$DB_URL' '$DB_USER' '$DB_PASS' '$OUT_FILE'"
 
 echo "Running Gatling..."
-export GATLING_CLIENT_ID="hmpps-person-record-gatlin"
-export GATLING_CLIENT_SECRET='JDusTZFzaaRB5G1pj0Z1F1yF6z<<ZNB>J1fs<wWi6$2dYb5R07siQAaN*N&R'
+export GATLING_CLIENT_ID="<CLIENT_ID>"
+export GATLING_CLIENT_SECRET='<CLIENT_SECRET>'
 CLIENT_ID=$GATLING_CLIENT_ID CLIENT_SECRET=$GATLING_CLIENT_SECRET ./gradlew gatlingRun -Denv=dev -DgetPrisonNumber=1 -DgetCrnNumber=1 -DgetDefendantId=1 -Dduration=60
 
 echo "Open Gatling Report"
