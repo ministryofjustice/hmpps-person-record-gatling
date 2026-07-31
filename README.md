@@ -11,7 +11,7 @@ Core person record: Gatling performance tests
 
 
 ### Setting up load
-- Users are injected from `simulation.conf` file
+- Users are injected during runtime from workflow
 - Calculate number of users per second based on the required requests during a certain time
 - Add that number for the new endpoint
 
