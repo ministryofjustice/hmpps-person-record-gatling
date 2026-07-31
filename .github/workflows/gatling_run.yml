@@ -102,7 +102,7 @@ jobs:
 
 
       - name: Slack Notification
-        if: failure()
+        if: false
         uses: slackapi/slack-github-action@v4
         with:
             method: chat.postMessage
