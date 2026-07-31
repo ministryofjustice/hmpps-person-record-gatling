@@ -36,15 +36,20 @@ tasks.register<JavaExec>("generateTestData") {
 
 tasks.register<Exec>("gatlingRunCi") {
     group = "gatling"
-    val profile = System.getProperty("profile") ?: "happypath"
+    val getPrisonNumber = System.getProperty("getPrisonNumber") ?: "15"
+    val getCrnNumber = System.getProperty("getCrnNumber") ?: "1"
+    val getDefendantId = System.getProperty("getDefendantId") ?: "1"
     val env = System.getProperty("env") ?: "dev"
     val duration = System.getProperty("duration") ?: "360"
     workingDir = project.rootDir
     val wrapper = if (org.gradle.internal.os.OperatingSystem.current().isWindows) "gradlew.bat" else "./gradlew"
-    commandLine(wrapper, "gatlingRun", "--all", "-Dprofile=$profile", "-Denv=$env", "-Dduration=$duration")
+    commandLine(wrapper, "gatlingRun", "--all", "-DgetPrisonNumber=$getPrisonNumber",
+      "-DgetCrnNumber=$getCrnNumber", "-DgetDefendantId=$getDefendantId", "-Denv=$env", "-Dduration=$duration")
 }
 gatling {
-    systemProperty("profile", System.getProperty("profile") ?: "happypath")
+    systemProperty("getPrisonNumber", System.getProperty("getPrisonNumber") ?: "15")
+    systemProperty("getCrnNumber", System.getProperty("getCrnNumber") ?: "1")
+    systemProperty("getDefendantId", System.getProperty("getDefendantId") ?: "1")
     systemProperty("env", System.getProperty("env") ?: "dev")
     systemProperty("duration", System.getProperty("duration") ?: "360")
 }

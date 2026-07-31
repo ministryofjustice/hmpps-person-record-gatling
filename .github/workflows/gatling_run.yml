@@ -6,23 +6,29 @@ on:
   workflow_dispatch:
     inputs:
       envName:
-        description: "Which API should this run against"
+        description: "Optional: env"
         required: false
         default: "dev"
         type: choice
         options:
           - dev
-      profile:
-        description: "Optional Which profile to run."
+      getPrisonNumber:
+        description: "Optional: getPrisonNumber requests/sec"
         required: false
-        default: "happypath"
-        type: choice
-        options:
-          - local
-          - worstcase
-          - happypath
+        default: "15"
+        type: string
+      getCrnNumber:
+        description: "Optional: getCrnNumber requests/sec"
+        required: false
+        default: "1"
+        type: string
+      getDefendantId:
+        description: "Optional: getDefendantId requests/sec"
+        required: false
+        default: "1"
+        type: string
       duration:
-        description: "The execution time"
+        description: "Optional: execution time"
         required: false
         default: "360"
         type: string
@@ -61,8 +67,12 @@ jobs:
           CLIENT_SECRET: ${{ secrets.GATLING_CLIENT_SECRET }}
         run: |
          
-          PROFILE="${{ github.event.inputs.profile }}"
-          PROFILE="${PROFILE:-happypath}"
+          PRISON_NUMBER="${{ github.event.inputs.getPrisonNumber }}"
+          PRISON_NUMBER="${PRISON_NUMBER:-15}"
+          CRN_NUMBER="${{ github.event.inputs.getCrnNumber }}"
+          CRN_NUMBER="${CRN_NUMBER:-1}"
+          DEFENDANT_ID="${{ github.event.inputs.getDefendantId }}"
+          DEFENDANT_ID="${DEFENDANT_ID:-1}"
           ENV="${{ github.event.inputs.envName }}"
           ENV="${ENV:-dev}"
           DURATION="${{ github.event.inputs.duration }}"
@@ -73,7 +83,9 @@ jobs:
           CLIENT_SECRET="${CLIENT_SECRET}" \
           ./gradlew gatlingRunCi \
           --no-daemon \
-          -Dprofile="$PROFILE" \
+          -DgetPrisonNumber="$PRISON_NUMBER" \
+          -DgetCrnNumber="$CRN_NUMBER" \
+          -DgetDefendantId="$DEFENDANT_ID" \
           -Denv="$ENV" \
           -Dduration="$DURATION"
 
