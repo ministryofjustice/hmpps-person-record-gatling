@@ -100,3 +100,19 @@ jobs:
             **/build/reports/gatling/**
           if-no-files-found: warn
 
+
+      - name: Slack Notification
+        if: failure()
+        uses: slackapi/slack-github-action@v4
+        with:
+            method: chat.postMessage
+            token: ${{ secrets.HMPPS_SLACK_BOT_TOKEN }}
+            payload: |
+              channel: "${{ vars.SECURITY_ALERTS_SLACK_CHANNEL_ID }}"
+              attachments:
+                - color: "#df2c2c"
+                  blocks:
+                    - type: section
+                      text:
+                        type: mrkdwn
+                        text: "❌ *Gatling Performance Test Failure*\n*Repository:* ${{ github.repository }}\n*Branch:* `${{ github.ref_name }}`\n*Workflow Run:* <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Workflow>"
