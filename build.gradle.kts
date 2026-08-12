@@ -6,7 +6,7 @@ plugins {
     kotlin("jvm") version "2.4.10"
     id("io.gatling.gradle") version "3.15.1.2"
     id("application")
-    id("org.owasp.dependencycheck") version "12.2.2"
+    id("org.owasp.dependencycheck") version "13.0.0"
 }
 
 repositories {
