@@ -13,13 +13,13 @@ import org.junit.jupiter.api.extension.ExtendWith
 import org.hamcrest.Matchers.equalTo
 
 @ExtendWith(PactConsumerTestExt::class)
-@PactTestFor(providerName = "core-person-record")
+@PactTestFor(providerName = "hmpps-person-record")
 class PactConsumerTest {
 
      private val crn = "X744208"
      private val cprAddressId = "ec4c7479-218c-4f11-a02d-edd749820679"
 
-     @Pact(consumer = "probation-address-consumer")
+     @Pact(consumer = "hmpps-person-record-gatling")
      fun createPact(builder: PactBuilder): V4Pact {
 
            val responseBody = LambdaDsl.newJsonBody { body ->
