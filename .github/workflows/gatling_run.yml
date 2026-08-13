@@ -1,26 +1,34 @@
 name: Gatling performance test run
 
 on:
+  schedule:
+    - cron: '0 8 * * 1-5'
   workflow_dispatch:
     inputs:
       envName:
-        description: "Which API should this run against"
+        description: "Optional: env"
         required: false
         default: "dev"
         type: choice
         options:
           - dev
-      profile:
-        description: "Optional Which profile to run."
+      getPrisonNumber:
+        description: "Optional: getPrisonNumber requests/sec"
         required: false
-        default: "happypath"
-        type: choice
-        options:
-          - local
-          - worstcase
-          - happypath
+        default: "15"
+        type: string
+      getCrnNumber:
+        description: "Optional: getCrnNumber requests/sec"
+        required: false
+        default: "1"
+        type: string
+      getDefendantId:
+        description: "Optional: getDefendantId requests/sec"
+        required: false
+        default: "1"
+        type: string
       duration:
-        description: "The execution time"
+        description: "Optional: execution time"
         required: false
         default: "360"
         type: string
@@ -31,17 +39,17 @@ jobs:
     permissions:
       contents: read
       actions: read
-    timeout-minutes: 600
+    timeout-minutes: 300
     env:
       CLIENT_ID: ${{ secrets.GATLING_CLIENT_ID }}
       CLIENT_SECRET: ${{ secrets.GATLING_CLIENT_SECRET }}
 
     steps:
       - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Set up JDK 25
-        uses: actions/setup-java@be666c2fcd27ec809703dec50e508c2fdc7f6654 # v5.2.0
+        uses: actions/setup-java@b6effb05e454b25005698d916606bdc6ffcbf961 # v5.7.0
         with:
           distribution: temurin
           java-version: '25'
@@ -59,18 +67,28 @@ jobs:
           CLIENT_SECRET: ${{ secrets.GATLING_CLIENT_SECRET }}
         run: |
          
-          PROFILE="${{ github.event.inputs.profile }}"
+          PRISON_NUMBER="${{ github.event.inputs.getPrisonNumber }}"
+          PRISON_NUMBER="${PRISON_NUMBER:-15}"
+          CRN_NUMBER="${{ github.event.inputs.getCrnNumber }}"
+          CRN_NUMBER="${CRN_NUMBER:-1}"
+          DEFENDANT_ID="${{ github.event.inputs.getDefendantId }}"
+          DEFENDANT_ID="${DEFENDANT_ID:-1}"
           ENV="${{ github.event.inputs.envName }}"
-          
+          ENV="${ENV:-dev}"
+          DURATION="${{ github.event.inputs.duration }}"
+          DURATION="${DURATION:-360}"
           set -eo pipefail
           
           CLIENT_ID="${CLIENT_ID}" \
           CLIENT_SECRET="${CLIENT_SECRET}" \
           ./gradlew gatlingRunCi \
           --no-daemon \
-          -Dprofile="${{ github.event.inputs.profile }}" \
-          -Denv="${{ github.event.inputs.envName }}" \
-          -Dduration="${{ github.event.inputs.duration }}"
+          -DgetPrisonNumber="$PRISON_NUMBER" \
+          -DgetCrnNumber="$CRN_NUMBER" \
+          -DgetDefendantId="$DEFENDANT_ID" \
+          -Denv="$ENV" \
+          -Dduration="$DURATION"
+
 
       - name: Upload Gatling reports
         if: always()
@@ -81,3 +99,20 @@ jobs:
             gatling/build/reports/gatling/**
             **/build/reports/gatling/**
           if-no-files-found: warn
+
+
+      - name: Slack Notification
+        if: failure()
+        uses: slackapi/slack-github-action@v4
+        with:
+            method: chat.postMessage
+            token: ${{ secrets.HMPPS_SLACK_BOT_TOKEN }}
+            payload: |
+              channel: "${{ vars.SECURITY_ALERTS_SLACK_CHANNEL_ID }}"
+              attachments:
+                - color: "#df2c2c"
+                  blocks:
+                    - type: section
+                      text:
+                        type: mrkdwn
+                        text: "❌ *Gatling Performance Test Failure*\n*Repository:* ${{ github.repository }}\n*Branch:* `${{ github.ref_name }}`\n*Workflow Run:* <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Workflow>"
