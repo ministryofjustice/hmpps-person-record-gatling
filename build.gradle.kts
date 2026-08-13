@@ -61,6 +61,9 @@ pact {
         pactBrokerUrl = System.getenv("PACT_BROKER_BASE_URL")
         pactBrokerUsername = System.getenv("PACT_BROKER_USERNAME")
         pactBrokerPassword = System.getenv("PACT_BROKER_PASSWORD")
-        tags = listOf(System.getenv("GITHUB_SHA") ?: "latest")
+        // Real commit SHA - identifies exactly which build published this pact.
+        consumerVersion = System.getenv("GITHUB_SHA") ?: "latest"
+        // Real git branch name - required for the provider's matchingBranch/mainBranch selectors to resolve.
+        consumerBranch = System.getenv("GITHUB_BRANCH") ?: "unknown"
     }
 }
