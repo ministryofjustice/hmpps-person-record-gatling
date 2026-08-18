@@ -28,6 +28,16 @@ application{
     mainClass.set("uk.gov.justice.digital.hmpps.personrecord.helper.CsvGenerator")
 }
 
+// The `copyAgent` task (from the hmpps-gradle-spring-boot plugin) writes the App Insights agent jar
+// into build/libs, which bootStartScripts/startScripts also read from without an explicit dependency declared.
+tasks.named("bootStartScripts") {
+    dependsOn("copyAgent")
+}
+
+tasks.named("startScripts") {
+    dependsOn("copyAgent")
+}
+
 tasks.register<JavaExec>("generateTestData") {
     group = "application"
     classpath = sourceSets.getByName("gatling").runtimeClasspath
