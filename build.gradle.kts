@@ -6,7 +6,7 @@ plugins {
     kotlin("jvm") version "2.4.10"
     id("io.gatling.gradle") version "3.15.1.2"
     id("application")
-    id("org.owasp.dependencycheck") version "12.2.2"
+    id("org.owasp.dependencycheck") version "13.0.0"
 }
 
 repositories {
@@ -16,16 +16,31 @@ repositories {
 dependencies {
     gatling("org.postgresql:postgresql:42.7.13")
     implementation("io.gatling.highcharts:gatling-charts-highcharts:3.15.1")
-    implementation("io.netty:netty-codec-http2:4.2.16.Final")
-    implementation("io.netty:netty-handler:4.2.16.Final")
+    implementation("io.netty:netty-codec-http2:4.2.17.Final")
+    implementation("io.netty:netty-handler:4.2.17.Final")
 }
 
 kotlin {
     jvmToolchain(25)
 }
 
+dependencyCheck {
+    // Additive project-specific suppressions, alongside the plugin-managed suppression file.
+    suppressionFiles.add("owasp-suppressions.xml")
+}
+
 application{
     mainClass.set("uk.gov.justice.digital.hmpps.personrecord.helper.CsvGenerator")
+}
+
+// The `copyAgent` task (from the hmpps-gradle-spring-boot plugin) writes the App Insights agent jar
+// into build/libs, which bootStartScripts/startScripts also read from without an explicit dependency declared.
+tasks.named("bootStartScripts") {
+    dependsOn("copyAgent")
+}
+
+tasks.named("startScripts") {
+    dependsOn("copyAgent")
 }
 
 tasks.register<JavaExec>("generateTestData") {
