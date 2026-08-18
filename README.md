@@ -19,7 +19,7 @@ Core person record: Gatling performance tests
 ### Running tests in local
 Port forward to [Access the DEV RDS Database](https://user-guide.cloud-platform.service.justice.gov.uk/documentation/other-topics/rds-external-access.html#accessing-your-rds-database)
 
-Update GATLING_CLIENT_ID and GATLING_CLIENT_SECRET in [run_local.sh](run_local.sh)
+Make sure you are authenticated to Cloud Platform and have `cloud-platform` CLI and `jq` installed, as [run_local.sh](run_local.sh) fetches the database details and Gatling client credentials from Kubernetes secrets at runtime.
 
 Run [run_local.sh](run_local.sh)
 
