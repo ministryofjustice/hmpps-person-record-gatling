@@ -65,6 +65,10 @@ class CorePersonRecordSimulation : Simulation() {
     setUp(*populations.toTypedArray())
       .protocols(httpProtocol)
       .maxDuration(Duration.ofSeconds(AppConfig.duration))
-      .assertions(global().successfulRequests().percent().gt(95.0))
+      .assertions(
+        global().successfulRequests().percent().gt(AppConfig.minSuccessPercentage),
+        global().responseTime().percentile(95.0).lt(AppConfig.p95ThresholdMillis),
+        global().responseTime().percentile(99.0).lt(AppConfig.p99ThresholdMillis),
+      )
   }
 }

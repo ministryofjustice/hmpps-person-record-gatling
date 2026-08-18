@@ -22,4 +22,9 @@ object AppConfig {
   val getPrisonNumberUsers = System.getProperty("getPrisonNumber", "15").toInt()
   val getCrnUsers = System.getProperty("getCrnNumber", "1").toInt()
   val getDefendantIdUsers = System.getProperty("getDefendantId", "1").toInt()
+
+  // Response-time SLA thresholds (milliseconds) and minimum success rate (%), used as Gatling assertions.
+  val p95ThresholdMillis = System.getProperty("p95ThresholdMillis", "1000").toInt()
+  val p99ThresholdMillis = System.getProperty("p99ThresholdMillis", "2000").toInt()
+  val minSuccessPercentage = System.getProperty("minSuccessPercentage", "95.0").toDouble()
 }
