@@ -3,6 +3,20 @@ Core person record: Gatling performance tests
 
 ## Getting started.
 
+### Common Gradle commands
+This project uses [Gradle](https://gradle.org) (via the `./gradlew` wrapper script) rather than npm-style scripts. Tasks are defined by the plugins declared in `build.gradle.kts`, plus a couple of custom ones registered at the bottom of that same file (`generateTestData`, `gatlingRunCi`). Run `./gradlew tasks` at any time to list everything available, with descriptions.
+
+| Command | What it does |
+|---|---|
+| `./gradlew check` | Runs unit tests + `ktlintCheck` - this is what CI runs on every PR |
+| `./gradlew test` | Runs the unit tests only (`src/test/kotlin`) |
+| `./gradlew ktlintCheck` | Checks Kotlin code style |
+| `./gradlew ktlintFormat` | Auto-fixes Kotlin code style violations |
+| `./gradlew gatlingRun` | Runs the Gatling performance simulation locally |
+| `./gradlew generateTestData` | Regenerates `data.csv` from the DB (used by `run_local.sh`) |
+| `./gradlew build` | Compiles everything and runs `check` |
+| `./gradlew tasks` | Lists every available task with a description |
+
 ### Adding a new test
 - Add the new endpoint URI and sql in `applicaion.conf`
 - Add the chain builder for the new endpoint in `ApiHelper` file
@@ -22,12 +36,7 @@ Simulation-wide assertions are configured in `CorePersonRecordSimulation` and re
 - `p99ThresholdMillis` (default `2000`) - maximum 99th percentile response time in ms, override with `-Dp99ThresholdMillis=`
 
 ### Running unit tests
-Unit tests (e.g. for `TokenManager` and `CsvGenerator`) live under `src/test/kotlin` and run with:
-```
-./gradlew test
-```
-`./gradlew check` runs both the unit tests and `ktlintCheck`, and is run automatically on every pull request via the `pr_check.yml` workflow.
-
+Unit tests (e.g. for `TokenManager` and `CsvGenerator`) live under `src/test/kotlin` and run with `./gradlew test` (see [Common Gradle commands](#common-gradle-commands) above). `./gradlew check` is run automatically on every pull request via the `pr_check.yml` workflow.
 
 ### Running tests in local
 Port forward to [Access the DEV RDS Database](https://user-guide.cloud-platform.service.justice.gov.uk/documentation/other-topics/rds-external-access.html#accessing-your-rds-database)
