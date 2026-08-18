@@ -1,6 +1,5 @@
 package uk.gov.justice.digital.hmpps.personrecord.simulation
 
-
 import io.gatling.javaapi.core.CoreDsl.constantUsersPerSec
 import io.gatling.javaapi.core.CoreDsl.csv
 import io.gatling.javaapi.core.CoreDsl.global
@@ -9,12 +8,10 @@ import io.gatling.javaapi.core.CoreDsl.scenario
 import io.gatling.javaapi.core.PopulationBuilder
 import io.gatling.javaapi.core.Simulation
 import io.gatling.javaapi.http.HttpDsl.http
-
 import uk.gov.justice.digital.hmpps.personrecord.config.AppConfig
 import uk.gov.justice.digital.hmpps.personrecord.helper.ApiHelper
 import uk.gov.justice.digital.hmpps.personrecord.helper.TokenManager
 import java.time.Duration
-
 
 class CorePersonRecordSimulation : Simulation() {
 
@@ -25,7 +22,6 @@ class CorePersonRecordSimulation : Simulation() {
 
   private val httpProtocol = http.baseUrl(AppConfig.baseUrl)
     .acceptHeader("application/json").shareConnections()
-
 
   private val scnPrisonNumber =
     scenario("prisonNumber")

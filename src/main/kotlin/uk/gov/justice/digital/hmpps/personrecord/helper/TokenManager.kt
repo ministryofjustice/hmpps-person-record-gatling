@@ -1,6 +1,5 @@
 package uk.gov.justice.digital.hmpps.personrecord.helper
 
-
 import uk.gov.justice.digital.hmpps.personrecord.config.AppConfig
 import java.net.URI
 import java.net.http.HttpClient
@@ -12,6 +11,7 @@ import java.util.Base64
 object TokenManager {
   @Volatile
   private var cacheToken: String = ""
+
   @Volatile
   private var expiryTime: Long = 0
   private val client = HttpClient.newHttpClient()
