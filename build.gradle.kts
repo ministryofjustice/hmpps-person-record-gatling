@@ -24,6 +24,11 @@ kotlin {
     jvmToolchain(25)
 }
 
+dependencyCheck {
+    // Additive project-specific suppressions, alongside the plugin-managed suppression file.
+    suppressionFiles.add("owasp-suppressions.xml")
+}
+
 application{
     mainClass.set("uk.gov.justice.digital.hmpps.personrecord.helper.CsvGenerator")
 }

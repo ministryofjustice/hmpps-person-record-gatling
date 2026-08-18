@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- Project specific OWASP dependency-check suppressions for hmpps-person-record-gatling. -->
+<!-- Added additively via dependencyCheck.suppressionFiles.add(...) in build.gradle.kts, -->
+<!-- alongside the plugin-managed dps-gradle-spring-boot-suppressions.xml. -->
+<suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.4.xsd"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.4.xsd
+                                  https://dependency-check.github.io/DependencyCheck/dependency-suppression.1.4.xsd">
+  <suppress>
+    <notes><![CDATA[
+    False positive: CVE-2025-51306 affects Gatling Enterprise (the commercial SaaS product), not the
+    open source gatling-shared-* libraries bundled with the gatling-gradle plugin. Incorrect CPE match
+    on shared vendor name "gatling".
+    file name: gatling-shared-cli-*.jar / gatling-shared-model_2.13-*.jar / gatling-shared-util_2.13-*.jar
+    ]]></notes>
+    <packageUrl regex="true">^pkg:maven/io\.gatling/gatling-shared-.*$</packageUrl>
+    <cve>CVE-2025-51306</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+    False positive: CVE-2025-51308 affects Gatling Enterprise (the commercial SaaS product), not the
+    open source gatling-shared-* libraries bundled with the gatling-gradle plugin. Incorrect CPE match
+    on shared vendor name "gatling".
+    file name: gatling-shared-cli-*.jar / gatling-shared-model_2.13-*.jar / gatling-shared-util_2.13-*.jar
+    ]]></notes>
+    <packageUrl regex="true">^pkg:maven/io\.gatling/gatling-shared-.*$</packageUrl>
+    <cve>CVE-2025-51308</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+    False positive: CVE-2022-32511 affects jmespath.rb (the Ruby gem), not io.burt:jmespath-jackson
+    (an unrelated Java library that happens to share the "jmespath" project name).
+    file name: jmespath-jackson-0.6.0.jar
+    ]]></notes>
+    <packageUrl regex="true">^pkg:maven/io\.burt/jmespath-jackson@.*$</packageUrl>
+    <cve>CVE-2022-32511</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+    False positive: CVE-2026-54133 affects jmespath.php, not io.burt:jmespath-jackson
+    (an unrelated Java library that happens to share the "jmespath" project name).
+    file name: jmespath-jackson-0.6.0.jar
+    ]]></notes>
+    <packageUrl regex="true">^pkg:maven/io\.burt/jmespath-jackson@.*$</packageUrl>
+    <cve>CVE-2026-54133</cve>
+  </suppress>
+  <suppress until="2026-09-30Z">
+    <notes><![CDATA[
+    CVE-2026-66299 is a DoS in Apache Tomcat's WebSocket *examples* web application only. We use
+    embedded Tomcat (tomcat-embed-core/tomcat-embed-websocket) via Spring Boot, which does not
+    package the examples web app, so this is not exploitable here. Fixed version 11.0.25 is not yet
+    published to Maven Central at time of suppression; re-review and upgrade tomcat-embed-* once
+    available.
+    file name: tomcat-embed-core-11.0.24.jar / tomcat-embed-websocket-11.0.24.jar
+    ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.apache\.tomcat\.embed/tomcat-embed-.*$</packageUrl>
+    <cve>CVE-2026-66299</cve>
+  </suppress>
+</suppressions>
