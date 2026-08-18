@@ -45,12 +45,16 @@ tasks.named("startScripts") {
 
 tasks.register<JavaExec>("generateTestData") {
   group = "application"
+  description = "Generates src/main/resources/testdata/data.csv by querying prison numbers, " +
+    "CRNs and defendant IDs from the database (see CsvGenerator)."
   classpath = sourceSets.getByName("gatling").runtimeClasspath
   mainClass.set("uk.gov.justice.digital.hmpps.personrecord.helper.CsvGenerator")
 }
 
 tasks.register<Exec>("gatlingRunCi") {
   group = "gatling"
+  description = "Runs the Gatling simulation with CI-friendly defaults for user counts, " +
+    "target environment and duration, each overridable via -D system properties."
   val getPrisonNumber = System.getProperty("getPrisonNumber") ?: "15"
   val getCrnNumber = System.getProperty("getCrnNumber") ?: "1"
   val getDefendantId = System.getProperty("getDefendantId") ?: "1"
