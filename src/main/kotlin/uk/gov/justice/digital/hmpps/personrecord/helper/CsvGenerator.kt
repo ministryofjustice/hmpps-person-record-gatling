@@ -25,16 +25,15 @@ object CsvGenerator {
     println("Done -> $outFile")
   }
 
-  fun runQuery(conn: Connection, sql: String): List<String> =
-    conn.createStatement().use { st ->
-      st.executeQuery(sql).use { rs ->
-        val result = mutableListOf<String>()
-        while (rs.next()) {
-          result += rs.getString(1) ?: ""
-        }
-        result
+  fun runQuery(conn: Connection, sql: String): List<String> = conn.createStatement().use { st ->
+    st.executeQuery(sql).use { rs ->
+      val result = mutableListOf<String>()
+      while (rs.next()) {
+        result += rs.getString(1) ?: ""
       }
+      result
     }
+  }
 
   fun writeCsv(rows: List<List<String>>, file: String) {
     FileWriter(file).use { w ->

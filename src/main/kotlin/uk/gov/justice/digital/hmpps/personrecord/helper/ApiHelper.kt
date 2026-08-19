@@ -1,6 +1,5 @@
 package uk.gov.justice.digital.hmpps.personrecord.helper
 
-
 import io.gatling.javaapi.core.ChainBuilder
 import io.gatling.javaapi.core.CoreDsl.exec
 import io.gatling.javaapi.http.HttpDsl.http
