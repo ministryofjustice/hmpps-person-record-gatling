@@ -27,6 +27,7 @@ kotlin {
 dependencyCheck {
   // Additive project-specific suppressions, alongside the plugin-managed suppression file.
   suppressionFiles.add("owasp-suppressions.xml")
+  formats = listOf("HTML", "SARIF")
 }
 
 application {
