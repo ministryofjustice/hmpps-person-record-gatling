@@ -27,6 +27,11 @@ on:
         required: false
         default: "1"
         type: string
+      getCrnAddress:
+        description: "Optional: getCrnAddress requests/sec"
+        required: false
+        default: "1"
+        type: string
       duration:
         description: "Optional: execution time"
         required: false
@@ -73,6 +78,8 @@ jobs:
           CRN_NUMBER="${CRN_NUMBER:-1}"
           DEFENDANT_ID="${{ github.event.inputs.getDefendantId }}"
           DEFENDANT_ID="${DEFENDANT_ID:-1}"
+          CRN_ADDRESS="${{ github.event.inputs.getCrnAddress }}"
+          CRN_ADDRESS="${CRN_ADDRESS:-1}"
           ENV="${{ github.event.inputs.envName }}"
           ENV="${ENV:-dev}"
           DURATION="${{ github.event.inputs.duration }}"
@@ -86,6 +93,7 @@ jobs:
           -DgetPrisonNumber="$PRISON_NUMBER" \
           -DgetCrnNumber="$CRN_NUMBER" \
           -DgetDefendantId="$DEFENDANT_ID" \
+          -DgetCrnAddress="$CRN_ADDRESS" \
           -Denv="$ENV" \
           -Dduration="$DURATION"
 

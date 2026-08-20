@@ -18,17 +18,17 @@ class CsvGeneratorTest {
 
     CsvGenerator.writeCsv(
       rows = listOf(
-        listOf("G9482GV", "X988723", "f89090fb-5189-4879-bf16-e022e1599ed8"),
-        listOf("A4409EC", "X991095", "d34fa6bf-0634-47f6-bd1b-37f551ae5da4"),
+        listOf("G9482GV", "X988723", "f89090fb-5189-4879-bf16-e022e1599ed8", "X988723", "3f7c1e2a-1111-4444-9999-aaaaaaaaaaaa"),
+        listOf("A4409EC", "X991095", "d34fa6bf-0634-47f6-bd1b-37f551ae5da4", "X991095", "3f7c1e2a-2222-4444-9999-bbbbbbbbbbbb"),
       ),
       file = file.absolutePath,
     )
 
     val lines = file.readLines()
     assertThat(lines).containsExactly(
-      "prison_number,crn,defendant_id",
-      "G9482GV,X988723,f89090fb-5189-4879-bf16-e022e1599ed8",
-      "A4409EC,X991095,d34fa6bf-0634-47f6-bd1b-37f551ae5da4",
+      "prison_number,crn,defendant_id,address_crn,cpr_address_id",
+      "G9482GV,X988723,f89090fb-5189-4879-bf16-e022e1599ed8,X988723,3f7c1e2a-1111-4444-9999-aaaaaaaaaaaa",
+      "A4409EC,X991095,d34fa6bf-0634-47f6-bd1b-37f551ae5da4,X991095,3f7c1e2a-2222-4444-9999-bbbbbbbbbbbb",
     )
   }
 
@@ -39,7 +39,7 @@ class CsvGeneratorTest {
 
     CsvGenerator.writeCsv(rows = emptyList(), file = file.absolutePath)
 
-    assertThat(file.readLines()).containsExactly("prison_number,crn,defendant_id")
+    assertThat(file.readLines()).containsExactly("prison_number,crn,defendant_id,address_crn,cpr_address_id")
   }
 
   @Test
