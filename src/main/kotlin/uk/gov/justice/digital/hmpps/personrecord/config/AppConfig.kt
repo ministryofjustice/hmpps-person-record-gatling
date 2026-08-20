@@ -18,10 +18,12 @@ object AppConfig {
   val uriGetPrisoner = conf("endpoint.getPrisoner") as String
   val uriGetCrn = conf("endpoint.getCrn") as String
   val uriGetDefendantId = conf("endpoint.getDefendantId") as String
+  val uriGetCrnAddress = conf("endpoint.getCrnAddress") as String
 
   val getPrisonNumberUsers = System.getProperty("getPrisonNumber", "15").toInt()
   val getCrnUsers = System.getProperty("getCrnNumber", "1").toInt()
   val getDefendantIdUsers = System.getProperty("getDefendantId", "1").toInt()
+  val getCrnAddressUsers = System.getProperty("getCrnAddress", "1").toInt()
 
   // Response-time SLA thresholds (milliseconds) and minimum success rate (%), used as Gatling assertions.
   val p95ThresholdMillis = System.getProperty("p95ThresholdMillis", "1000").toInt()

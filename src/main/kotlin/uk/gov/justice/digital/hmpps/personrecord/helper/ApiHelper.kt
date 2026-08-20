@@ -29,4 +29,11 @@ object ApiHelper {
       .header("Authorization", "Bearer #{sharedToken}")
       .check(status().shouldBe(200)),
   )
+
+  val getCrnAddresses: ChainBuilder = exec(
+    http("GET Crn Address")
+      .get(AppConfig.uriGetCrnAddress)
+      .header("Authorization", "Bearer #{sharedToken}")
+      .check(status().shouldBe(200)),
+  )
 }
