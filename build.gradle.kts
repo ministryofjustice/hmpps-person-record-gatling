@@ -1,4 +1,5 @@
 import org.gradle.internal.classpath.Instrumented.systemProperty
+import org.springframework.boot.gradle.tasks.bundling.BootJar
 
 
 plugins {
@@ -32,6 +33,17 @@ dependencyCheck {
 
 application {
   mainClass.set("uk.gov.justice.digital.hmpps.personrecord.helper.CsvGenerator")
+}
+
+// Ensure `assemble` produces a single, predictably-named jar in build/libs (regardless of
+// project version or BUILD_NUMBER), since downstream steps (e.g. the Veracode scan) expect
+// exactly one file named `${project.name}.jar`.
+tasks.named("jar") {
+  enabled = false
+}
+
+tasks.named<BootJar>("bootJar") {
+  archiveFileName.set("${project.name}.jar")
 }
 
 // The `copyAgent` task (from the hmpps-gradle-spring-boot plugin) writes the App Insights agent jar
