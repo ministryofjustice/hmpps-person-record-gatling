@@ -16,7 +16,7 @@ echo "DB variables loaded"
 
 echo "Generate test data"
 export OUT_FILE="src/main/resources/testdata/data.csv"
-./gradlew generateTestData  --args="'$DB_URL' '$DB_USER' '$DB_PASS' '$OUT_FILE'"
+./gradlew --no-daemon generateTestData --args="'$DB_URL' '$DB_USER' '$DB_PASS' '$OUT_FILE'"
 
 echo "Fetch Gatling client credentials"
 GATLING_ID_JSON=$(cloud-platform decode-secret --secret=hmpps-person-record-gatling-client-id --namespace=hmpps-person-record-dev)
@@ -29,7 +29,7 @@ GATLING_CLIENT_SECRET=$(echo "$GATLING_SECRET_JSON" | jq -r '.data.secret')
 echo "Gatling client credentials loaded"
 
 echo "Running Gatling..."
-CLIENT_ID=$GATLING_CLIENT_ID CLIENT_SECRET=$GATLING_CLIENT_SECRET ./gradlew gatlingRun -Denv=dev -DgetPrisonNumber=1 -DgetCrnNumber=1 -DgetDefendantId=1 -Dduration=60
+CLIENT_ID=$GATLING_CLIENT_ID CLIENT_SECRET=$GATLING_CLIENT_SECRET ./gradlew --no-daemon gatlingRun -Denv=dev -DgetPrisonNumber=1 -DgetCrnNumber=1 -DgetDefendantId=1 -Dduration=60
 
 echo "Open Gatling Report"
 open "build/reports/gatling/$(ls -1t build/reports/gatling | head -1)/index.html"

@@ -37,6 +37,11 @@ on:
         required: false
         default: "360"
         type: string
+      rampUpDuration:
+        description: "Optional: ramp-up duration (seconds) before steady-state load"
+        required: false
+        default: "30"
+        type: string
 jobs:
   gatling-run:
     name: Run Gatling simulations
@@ -84,6 +89,8 @@ jobs:
           ENV="${ENV:-dev}"
           DURATION="${{ github.event.inputs.duration }}"
           DURATION="${DURATION:-360}"
+          RAMP_UP_DURATION="${{ github.event.inputs.rampUpDuration }}"
+          RAMP_UP_DURATION="${RAMP_UP_DURATION:-30}"
           set -eo pipefail
           
           CLIENT_ID="${CLIENT_ID}" \
@@ -95,7 +102,8 @@ jobs:
           -DgetDefendantId="$DEFENDANT_ID" \
           -DgetCrnAddress="$CRN_ADDRESS" \
           -Denv="$ENV" \
-          -Dduration="$DURATION"
+          -Dduration="$DURATION" \
+          -DrampUpDuration="$RAMP_UP_DURATION"
 
 
       - name: Upload Gatling reports

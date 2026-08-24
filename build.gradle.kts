@@ -73,6 +73,7 @@ tasks.register<Exec>("gatlingRunCi") {
   val getDefendantId = System.getProperty("getDefendantId") ?: "1"
   val env = System.getProperty("env") ?: "dev"
   val duration = System.getProperty("duration") ?: "360"
+  val rampUpDuration = System.getProperty("rampUpDuration") ?: "30"
   workingDir = project.rootDir
   val wrapper = if (org.gradle.internal.os.OperatingSystem.current().isWindows) "gradlew.bat" else "./gradlew"
   commandLine(
@@ -84,6 +85,7 @@ tasks.register<Exec>("gatlingRunCi") {
     "-DgetDefendantId=$getDefendantId",
     "-Denv=$env",
     "-Dduration=$duration",
+    "-DrampUpDuration=$rampUpDuration",
   )
 }
 gatling {
@@ -92,4 +94,5 @@ gatling {
   systemProperty("getDefendantId", System.getProperty("getDefendantId") ?: "1")
   systemProperty("env", System.getProperty("env") ?: "dev")
   systemProperty("duration", System.getProperty("duration") ?: "360")
+  systemProperty("rampUpDuration", System.getProperty("rampUpDuration") ?: "30")
 }

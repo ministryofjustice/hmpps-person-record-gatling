@@ -4,7 +4,9 @@ import io.gatling.javaapi.core.CoreDsl.constantUsersPerSec
 import io.gatling.javaapi.core.CoreDsl.csv
 import io.gatling.javaapi.core.CoreDsl.global
 import io.gatling.javaapi.core.CoreDsl.listFeeder
+import io.gatling.javaapi.core.CoreDsl.rampUsersPerSec
 import io.gatling.javaapi.core.CoreDsl.scenario
+import io.gatling.javaapi.core.OpenInjectionStep
 import io.gatling.javaapi.core.PopulationBuilder
 import io.gatling.javaapi.core.Simulation
 import io.gatling.javaapi.http.HttpDsl.http
@@ -25,6 +27,12 @@ class CorePersonRecordSimulation : Simulation() {
 
   private val httpProtocol = http.baseUrl(AppConfig.baseUrl)
     .acceptHeader("application/json").shareConnections()
+
+  // Ramps from 0 up to the target rate over `rampUpDuration`, then holds that target rate for `duration`.
+  private fun rampThenHold(targetUsersPerSec: Double): List<OpenInjectionStep> = listOf(
+    rampUsersPerSec(0.0).to(targetUsersPerSec).during(Duration.ofSeconds(AppConfig.rampUpDuration)),
+    constantUsersPerSec(targetUsersPerSec).during(Duration.ofSeconds(AppConfig.duration)).randomized(),
+  )
 
   private val scnPrisonNumber =
     scenario("prisonNumber")
@@ -52,35 +60,13 @@ class CorePersonRecordSimulation : Simulation() {
 
   init {
     val populations = mutableListOf<PopulationBuilder>()
-    populations.add(
-      scnPrisonNumber.injectOpen(
-        constantUsersPerSec(AppConfig.getPrisonNumberUsers.toDouble()).during(
-          AppConfig.duration,
-        ).randomized(),
-      ),
-    )
-    populations.add(
-      scnCrn.injectOpen(
-        constantUsersPerSec(AppConfig.getCrnUsers.toDouble()).during(AppConfig.duration).randomized(),
-      ),
-    )
-    populations.add(
-      scnDefendantId.injectOpen(
-        constantUsersPerSec(AppConfig.getDefendantIdUsers.toDouble()).during(
-          AppConfig.duration,
-        ).randomized(),
-      ),
-    )
-    populations.add(
-      scnCrnAddress.injectOpen(
-        constantUsersPerSec(AppConfig.getCrnAddressUsers.toDouble()).during(
-          AppConfig.duration,
-        ).randomized(),
-      ),
-    )
+    populations.add(scnPrisonNumber.injectOpen(rampThenHold(AppConfig.getPrisonNumberUsers.toDouble())))
+    populations.add(scnCrn.injectOpen(rampThenHold(AppConfig.getCrnUsers.toDouble())))
+    populations.add(scnDefendantId.injectOpen(rampThenHold(AppConfig.getDefendantIdUsers.toDouble())))
+    populations.add(scnCrnAddress.injectOpen(rampThenHold(AppConfig.getCrnAddressUsers.toDouble())))
     setUp(*populations.toTypedArray())
       .protocols(httpProtocol)
-      .maxDuration(Duration.ofSeconds(AppConfig.duration))
+      .maxDuration(Duration.ofSeconds(AppConfig.rampUpDuration + AppConfig.duration))
       .assertions(
         global().successfulRequests().percent().gt(AppConfig.minSuccessPercentage),
         global().responseTime().percentile(95.0).lt(AppConfig.p95ThresholdMillis),
