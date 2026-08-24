@@ -19,6 +19,9 @@ class CorePersonRecordSimulation : Simulation() {
   private var prisonNumber = listFeeder(allData.map { mapOf("prison_number" to it["prison_number"]) }).circular()
   private var crn = listFeeder(allData.map { mapOf("crn" to it["crn"]) }).circular()
   private var defendantId = listFeeder(allData.map { mapOf("defendant_id" to it["defendant_id"]) }).circular()
+  private var crnAddress = listFeeder(
+    allData.map { mapOf("address_crn" to it["address_crn"], "cpr_address_id" to it["cpr_address_id"]) },
+  ).circular()
 
   private val httpProtocol = http.baseUrl(AppConfig.baseUrl)
     .acceptHeader("application/json").shareConnections()
@@ -41,6 +44,12 @@ class CorePersonRecordSimulation : Simulation() {
       .exec { session -> session.set("sharedToken", TokenManager.getToken()) }
       .exec(ApiHelper.getDefendants)
 
+  private val scnCrnAddress =
+    scenario("crnAddress")
+      .feed(crnAddress)
+      .exec { session -> session.set("sharedToken", TokenManager.getToken()) }
+      .exec(ApiHelper.getCrnAddresses)
+
   init {
     val populations = mutableListOf<PopulationBuilder>()
     populations.add(
@@ -58,6 +67,13 @@ class CorePersonRecordSimulation : Simulation() {
     populations.add(
       scnDefendantId.injectOpen(
         constantUsersPerSec(AppConfig.getDefendantIdUsers.toDouble()).during(
+          AppConfig.duration,
+        ).randomized(),
+      ),
+    )
+    populations.add(
+      scnCrnAddress.injectOpen(
+        constantUsersPerSec(AppConfig.getCrnAddressUsers.toDouble()).during(
           AppConfig.duration,
         ).randomized(),
       ),
