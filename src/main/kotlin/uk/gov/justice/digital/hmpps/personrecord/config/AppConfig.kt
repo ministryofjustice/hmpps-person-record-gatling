@@ -3,8 +3,10 @@ package uk.gov.justice.digital.hmpps.personrecord.config
 import com.typesafe.config.ConfigFactory
 
 object AppConfig {
-  val clientId: String = System.getenv("CLIENT_ID") ?: ""
-  val clientSecret: String = System.getenv("CLIENT_SECRET") ?: ""
+  val clientId: String = System.getenv("CLIENT_ID")
+    ?: throw IllegalStateException("CLIENT_ID environment variable must be set")
+  val clientSecret: String = System.getenv("CLIENT_SECRET")
+    ?: throw IllegalStateException("CLIENT_SECRET environment variable must be set")
 
   private val config = ConfigFactory.load()
     .withFallback(ConfigFactory.load("application.conf"))
