@@ -1,7 +1,5 @@
 #!/bin/bash
 
-set -euo pipefail
-
 echo "Fetch DB details"
 DB_JSON=$(cloud-platform decode-secret --secret=hmpps-person-record-rds-instance-output --namespace=hmpps-person-record-dev)
 
@@ -24,35 +22,16 @@ echo "Fetch Gatling client credentials"
 GATLING_ID_JSON=$(cloud-platform decode-secret --secret=hmpps-person-record-gatling-client-id --namespace=hmpps-person-record-dev)
 GATLING_SECRET_JSON=$(cloud-platform decode-secret --secret=hmpps-person-record-gatling-client-secret --namespace=hmpps-person-record-dev)
 
-export CLIENT_ID
-CLIENT_ID=$(echo "$GATLING_ID_JSON" | jq -r '.data.id')
-export CLIENT_SECRET
-CLIENT_SECRET=$(echo "$GATLING_SECRET_JSON" | jq -r '.data.secret')
+export GATLING_CLIENT_ID
+GATLING_CLIENT_ID=$(echo "$GATLING_ID_JSON" | jq -r '.data.id')
+export GATLING_CLIENT_SECRET
+GATLING_CLIENT_SECRET=$(echo "$GATLING_SECRET_JSON" | jq -r '.data.secret')
 echo "Gatling client credentials loaded"
 
 echo "Running Gatling..."
-./gradlew --no-daemon gatlingRun -Denv=dev -DgetPrisonNumber=1 -DgetCrnNumber=1 -DgetDefendantId=1 -Dduration=60
+CLIENT_ID=$GATLING_CLIENT_ID CLIENT_SECRET=$GATLING_CLIENT_SECRET ./gradlew --no-daemon gatlingRun -Denv=dev -DgetPrisonNumber=1 -DgetCrnNumber=1 -DgetDefendantId=1 -Dduration=60
 
 echo "Open Gatling Report"
-REPORTS_DIR="build/reports/gatling"
+open "build/reports/gatling/$(ls -1t build/reports/gatling | head -1)/index.html"
 
-if [[ ! -d "$REPORTS_DIR" ]]; then
-  echo "Gatling completed but no report directory was generated at $REPORTS_DIR" >&2
-  exit 1
-fi
 
-LATEST_RUN_DIR=$(find "$REPORTS_DIR" -mindepth 1 -maxdepth 1 -type d | sort | tail -1)
-
-if [[ -z "$LATEST_RUN_DIR" ]]; then
-  echo "Gatling completed but no run report directory was found in $REPORTS_DIR" >&2
-  exit 1
-fi
-
-REPORT_INDEX="$LATEST_RUN_DIR/index.html"
-
-if [[ ! -f "$REPORT_INDEX" ]]; then
-  echo "Gatling completed but the report file was not found at $REPORT_INDEX" >&2
-  exit 1
-fi
-
-open "$REPORT_INDEX"
