@@ -12,6 +12,9 @@ object AppConfig {
   val env = System.getProperty("env", "dev")
   val duration = System.getProperty("duration", "360").toLong()
 
+  // Ramp-up period (seconds) before each scenario reaches its steady-state target rate.
+  val rampUpDuration = System.getProperty("rampUpDuration", "30").toLong()
+
   private fun conf(path: String) = config.getAnyRef(path)
   val baseUrl = conf("environments.$env.baseUrl") as String
   val tokenUrl = conf("environments.$env.tokenUrl") as String

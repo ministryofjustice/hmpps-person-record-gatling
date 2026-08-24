@@ -28,6 +28,7 @@ This project uses [Gradle](https://gradle.org) (via the `./gradlew` wrapper scri
 - Users are injected during runtime from workflow
 - Calculate number of users per second based on the required requests during a certain time
 - Add that number for the new endpoint
+- Each scenario ramps up from 0 to its target rate over `rampUpDuration` seconds (default `30`, override with `-DrampUpDuration=`) before holding that rate for `duration` seconds. This avoids hitting the target load instantly and lets ramp-up vs steady-state phases be analysed separately in the Gatling report.
 
 ### Assertions / SLA thresholds
 Simulation-wide assertions are configured in `CorePersonRecordSimulation` and read from `AppConfig`. The build fails if any of these are breached:
