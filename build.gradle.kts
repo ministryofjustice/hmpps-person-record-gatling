@@ -28,6 +28,9 @@ kotlin {
 dependencyCheck {
   // Additive project-specific suppressions, alongside the plugin-managed suppression file.
   suppressionFiles.add("owasp-suppressions.xml")
+  // Keep the dependency-check report files at the root of build/reports so the shared
+  // GitHub Action can sanitise and upload them without any repo-specific overrides.
+  outputDirectory.set(layout.buildDirectory.dir("reports"))
   formats = listOf("HTML", "SARIF")
 }
 
