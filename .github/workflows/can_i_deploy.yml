@@ -36,7 +36,7 @@ on:
         description: The version of the pacticipant to check (typically the git commit SHA)
         required: false
         type: string
-        default: ${{ github.sha }}
+      #        default: ${{ github.sha }}
       to_environment:
         description: The target deployment environment to check compatibility against
         required: false
