@@ -16,11 +16,15 @@ name: Pact - Can I Deploy
 #       pact_broker_username: ${{ secrets.PACT_BROKER_USERNAME }}
 #       pact_broker_password: ${{ secrets.PACT_BROKER_PASSWORD }}
 
+
+
 env:
   PACT_BROKER_BASE_URL: 'https://pact-broker-prod.apps.live-1.cloud-platform.service.justice.gov.uk'
   PACT_CLI_VERSION: '18.1.1'
 
 on:
+  push:
+    branches: [ "pact-consumer-tests-poc" ]
   workflow_call:
     inputs:
       pacticipant:
