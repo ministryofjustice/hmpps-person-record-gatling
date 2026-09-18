@@ -25,6 +25,24 @@ env:
 on:
   push:
     branches: [ "pact-consumer-tests-poc" ]
+
+  workflow_dispatch:
+    inputs:
+      pacticipant:
+        description: The name of the pacticipant (consumer or provider) to check, as registered in the Pact Broker
+        required: true
+        type: string
+      version:
+        description: The version of the pacticipant to check (typically the git commit SHA)
+        required: false
+        type: string
+        default: ${{ github.sha }}
+      to_environment:
+        description: The target deployment environment to check compatibility against
+        required: false
+        type: string
+        default: 'dev'
+
   workflow_call:
     inputs:
       pacticipant:
@@ -64,7 +82,7 @@ jobs:
 
       - name: Can I deploy?
         run: |
-          npx --yes --package @pact-foundation/pact-cli@${{ inputs.pact_cli_version }} pact-broker can-i-deploy \
+          npx --yes --package @pact-foundation/pact-cli@${{ env.PACT_CLI_VERSION }} pact-broker can-i-deploy \
             --pacticipant "${{ inputs.pacticipant }}" \
             --version "${{ inputs.version }}" \
             --to-environment "${{ inputs.to_environment }}"
