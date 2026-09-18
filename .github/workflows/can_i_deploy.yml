@@ -1,0 +1,70 @@
+name: Pact - Can I Deploy
+
+# Reusable workflow that any consumer repo can call to gate a deployment on
+# Pact Broker verification results before releasing to a target environment.
+#
+# Example usage from a consumer repo:
+#
+# jobs:
+#   can-i-deploy:
+#     uses: ministryofjustice/hmpps-person-record-gatling/.github/workflows/can_i_deploy.yml@main
+#     with:
+#       pacticipant: hmpps-my-consumer-service
+#       version: ${{ github.sha }}
+#       to_environment: production
+#     secrets:
+#       pact_broker_username: ${{ secrets.PACT_BROKER_USERNAME }}
+#       pact_broker_password: ${{ secrets.PACT_BROKER_PASSWORD }}
+
+env:
+  PACT_BROKER_BASE_URL: 'https://pact-broker-prod.apps.live-1.cloud-platform.service.justice.gov.uk'
+  PACT_CLI_VERSION: '18.1.1'
+
+on:
+  workflow_call:
+    inputs:
+      pacticipant:
+        description: The name of the pacticipant (consumer or provider) to check, as registered in the Pact Broker
+        required: true
+        type: string
+      version:
+        description: The version of the pacticipant to check (typically the git commit SHA)
+        required: false
+        type: string
+        default: ${{ github.sha }}
+      to_environment:
+        description: The target deployment environment to check compatibility against
+        required: false
+        type: string
+        default: 'dev'
+    secrets:
+      pact_broker_username:
+        description: Username for authenticating with the Pact Broker
+        required: true
+      pact_broker_password:
+        description: Password for authenticating with the Pact Broker
+        required: true
+
+permissions:
+  contents: read
+
+jobs:
+  can_i_deploy:
+    name: Can I deploy ${{ inputs.pacticipant }} to ${{ inputs.to_environment }}?
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version: '24'
+
+      - name: Can I deploy?
+        run: |
+          npx --yes --package @pact-foundation/pact-cli@${{ inputs.pact_cli_version }} pact-broker can-i-deploy \
+            --pacticipant "${{ inputs.pacticipant }}" \
+            --version "${{ inputs.version }}" \
+            --to-environment "${{ inputs.to_environment }}"
+        env:
+          PACT_BROKER_BASE_URL: ${{ env.PACT_BROKER_BASE_URL }}
+          PACT_BROKER_USERNAME: ${{ secrets.pact_broker_username }}
+          PACT_BROKER_PASSWORD: ${{ secrets.pact_broker_password }}
