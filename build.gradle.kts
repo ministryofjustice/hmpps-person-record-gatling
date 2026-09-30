@@ -16,7 +16,7 @@ repositories {
 
 dependencies {
   gatling("org.postgresql:postgresql:42.7.13")
-  implementation("io.gatling.highcharts:gatling-charts-highcharts:3.15.1")
+  implementation("io.gatling.highcharts:gatling-charts-highcharts:3.16.0")
   implementation("io.netty:netty-codec-http2:4.2.18.Final")
   implementation("io.netty:netty-handler:4.2.18.Final")
 }
