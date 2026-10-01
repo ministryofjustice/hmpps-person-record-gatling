@@ -5,7 +5,7 @@ import org.springframework.boot.gradle.tasks.bundling.BootJar
 plugins {
   id("uk.gov.justice.hmpps.gradle-spring-boot") version "11.0.10"
   kotlin("jvm") version "2.4.10"
-  id("io.gatling.gradle") version "3.15.1.3"
+  id("io.gatling.gradle") version "3.16.0"
   id("application")
   id("org.owasp.dependencycheck") version "13.0.0"
 }
@@ -15,8 +15,12 @@ repositories {
 }
 
 dependencies {
+  val logbackVersion = "1.6.5"
+
   gatling("org.postgresql:postgresql:42.7.13")
-  implementation("io.gatling.highcharts:gatling-charts-highcharts:3.15.1")
+  implementation("io.gatling.highcharts:gatling-charts-highcharts:3.16.0")
+  implementation("ch.qos.logback:logback-classic:$logbackVersion")
+  implementation("ch.qos.logback:logback-core:$logbackVersion")
   implementation("io.netty:netty-codec-http2:4.2.18.Final")
   implementation("io.netty:netty-handler:4.2.18.Final")
 }
