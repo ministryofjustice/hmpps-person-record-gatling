@@ -1,10 +1,9 @@
 import org.gradle.internal.classpath.Instrumented.systemProperty
 import org.springframework.boot.gradle.tasks.bundling.BootJar
 
-
 plugins {
   id("uk.gov.justice.hmpps.gradle-spring-boot") version "11.0.11"
-  kotlin("jvm") version "2.4.10"
+  kotlin("jvm") version "2.4.20"
   id("io.gatling.gradle") version "3.16.0"
   id("application")
   id("org.owasp.dependencycheck") version "13.0.0"

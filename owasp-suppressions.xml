@@ -9,6 +9,56 @@
                                   https://dependency-check.github.io/DependencyCheck/dependency-suppression.1.4.xsd">
   <suppress>
     <notes><![CDATA[
+    False positive: these CVEs affect the Elasticsearch server product (CPE cpe:2.3:a:elastic:elasticsearch),
+    not org.elasticsearch:elasticsearch-tdigest (a small, standalone t-digest percentile algorithm library
+    extracted from the Elasticsearch project and pulled in transitively via gatling-charts-highcharts for
+    report generation). Incorrect CPE match on shared vendor/product name "elasticsearch".
+    file name: elasticsearch-tdigest-*.jar
+    ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.elasticsearch/elasticsearch-tdigest@.*$</packageUrl>
+    <cve>CVE-2024-52979</cve>
+    <cve>CVE-2025-37727</cve>
+    <cve>CVE-2025-37731</cve>
+    <cve>CVE-2025-68384</cve>
+    <cve>CVE-2025-68390</cve>
+    <cve>CVE-2026-56143</cve>
+    <cve>CVE-2026-56144</cve>
+    <cve>CVE-2026-56145</cve>
+    <cve>CVE-2026-56148</cve>
+    <cve>CVE-2026-56149</cve>
+    <cve>CVE-2026-63136</cve>
+    <cve>CVE-2026-63140</cve>
+    <cve>CVE-2026-63263</cve>
+    <cve>CVE-2026-72636</cve>
+    <cve>CVE-2026-72638</cve>
+    <cve>CVE-2026-72645</cve>
+    <cve>CVE-2026-72647</cve>
+    <cve>CVE-2026-72649</cve>
+    <cve>CVE-2026-72656</cve>
+    <cve>CVE-2026-72683</cve>
+    <cve>CVE-2026-72684</cve>
+    <cve>CVE-2026-72685</cve>
+    <cve>CVE-2026-72686</cve>
+    <cve>CVE-2026-72687</cve>
+    <cve>CVE-2026-78607</cve>
+    <cve>CVE-2026-82294</cve>
+    <cve>CVE-2026-82300</cve>
+    <cve>CVE-2026-94397</cve>
+    <cve>CVE-2026-94398</cve>
+    <cve>CVE-2026-94399</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+    False positive: CVE-2017-1000034 affects Akka's Remoting component (java deserialization RCE), not
+    org.scala-lang.modules:scala-parser-combinators. Incorrect CPE match on shared Scala/Lightbend
+    ecosystem vendor association.
+    file name: scala-parser-combinators_2.13-*.jar
+    ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.scala-lang\.modules/scala-parser-combinators_2\.13@.*$</packageUrl>
+    <cve>CVE-2017-1000034</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
     False positive: CVE-2025-51306 affects Gatling Enterprise (the commercial SaaS product), not the
     open source gatling-shared-* libraries bundled with the gatling-gradle plugin. Incorrect CPE match
     on shared vendor name "gatling".
