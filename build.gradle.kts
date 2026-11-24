@@ -16,7 +16,7 @@ repositories {
 dependencies {
   val logbackVersion = "1.6.6"
 
-  gatling("org.postgresql:postgresql:42.7.14")
+  gatling("org.postgresql:postgresql:42.7.15")
   implementation("io.gatling.highcharts:gatling-charts-highcharts:3.16.0")
   implementation("ch.qos.logback:logback-classic:$logbackVersion")
   implementation("ch.qos.logback:logback-core:$logbackVersion")
